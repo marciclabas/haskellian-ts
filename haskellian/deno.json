@@ -1,0 +1,10 @@
+{
+  "imports": { "@deno/dnt": "jsr:@deno/dnt@^0.41.2" },
+  "lint": {
+    "rules": {
+      "exclude": [
+        "no-explicit-any"
+      ]
+    }
+  }
+}

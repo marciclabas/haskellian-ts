@@ -1,0 +1,13 @@
+version := "0.0.7"
+
+patch:
+  $BUMP Justfile
+
+build:
+  deno run -A build.ts {{version}}
+  @echo "Deleting dumb deno tag"
+  @jq 'del(._generatedBy)' dist/package.json > /tmp/package.json && mv /tmp/package.json dist/package.json
+
+publish: build
+  cd dist && npm publish --access=public
+  @just patch
