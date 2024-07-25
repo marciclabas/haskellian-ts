@@ -1,9 +1,4 @@
-export function* enumerate<A>(xs: Iterable<A>): Iterable<[number, A]> {
-  let i = 0
-  for (const x of xs)
-    yield [i++, x]
-
-}
+import { enumerate } from './basics.ts'
 
 export function head<A>(xs: Iterable<A>): A | undefined {
   for (const x of xs)

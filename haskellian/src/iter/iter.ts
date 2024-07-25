@@ -1,5 +1,6 @@
-import { flatten, filter, map, range } from "./basics.ts";
-import { uncons, tail, take, head, pad, enumerate, skip } from './slicing.ts'
+import { flatten, filter, map, range, enumerate } from './basics.ts';
+import { uncons, tail, take, head, pad, skip } from './slicing.ts'
+import { batch } from './batching.ts'
 
 export class Iter<A> implements Iterable<A> {
   constructor(private xs: Iterable<A>) {}
@@ -11,11 +12,11 @@ export class Iter<A> implements Iterable<A> {
     return new Iter(range(start, end, step))
   }
 
-  map<B>(f: (x: A) => B): Iter<B> {
+  map<B>(f: (x: A, idx: number) => B): Iter<B> {
     return new Iter(map(f, this.xs))
   }
 
-  filter(p: (x: A) => boolean): Iter<A> {
+  filter(p: (x: A, idx: number) => boolean): Iter<A> {
     return new Iter(filter(p, this.xs))
   }
 
@@ -37,6 +38,10 @@ export class Iter<A> implements Iterable<A> {
 
   tail(): Iter<A> {
     return new Iter(tail(this.xs))
+  }
+
+  batch(n: number): Iter<A[]> {
+    return new Iter(batch(n, this.xs))
   }
 
   enumerate(): Iter<[number, A]> {

@@ -1,11 +1,17 @@
-export function* map<A, B>(f: (x: A) => B, xs: Iterable<A>): Iterable<B> { 
+export function* enumerate<A>(xs: Iterable<A>): Iterable<[number, A]> {
+  let i = 0
   for (const x of xs)
-    yield f(x)
+    yield [i++, x]
 }
 
-export function* filter<A>(p: (x: A) => boolean, xs: Iterable<A>): Iterable<A> {
-  for (const x of xs)
-    if (p(x))
+export function* map<A, B>(f: (x: A, idx: number) => B, xs: Iterable<A>): Iterable<B> { 
+  for (const [i, x] of enumerate(xs))
+    yield f(x, i)
+}
+
+export function* filter<A>(p: (x: A, idx: number) => boolean, xs: Iterable<A>): Iterable<A> {
+  for (const [i, x] of enumerate(xs))
+    if (p(x, i))
       yield x
 }
 
